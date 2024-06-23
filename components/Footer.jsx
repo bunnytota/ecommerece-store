@@ -13,7 +13,7 @@ const Footer = () => {
           
           <div className='icon-container'>
             <a href='https://www.instagram.com/ha_store_77'><BsInstagram  size={20} /></a>
-            <a href='https://www.facebook.com/profile.php?id=61557704611843&mibextid=ZbWKwL'><GrFacebookOption size={20} /></a>
+            <a href='https://www.facebook.com/share/1kmZCqv1epVDXQmy/?mibextid=qi2Omg'><GrFacebookOption size={20} /></a>
             <a href='https://wa.me/923340596908'><BsWhatsapp size={20} /></a>
           
         </div>
