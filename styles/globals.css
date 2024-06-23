@@ -467,22 +467,6 @@ nav input {
   bottom: 26rem;
   left: 22rem;
 }
-.swiper-button-prev, .swiper-button-next {
-  background-repeat: no-repeat;
-  background-size: auto;
-  background-position: center;
-  padding: 2rem;
-}
-.swiper-button-prev {
-  background-image: url('../src/assets/Back.png');
-}
-.swiper-button-next {
-  background-image: url('../src/assets/Next.png');
-}
-.swiper-button-prev::after,
-.swiper-button-next::after {
-  display: none;
-}
 
 
 /*-------------------- SINGLE PRODUCT PAGE ------------------*/

@@ -4,12 +4,10 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
-import SwipeableViews from 'react-swipeable-views';
-import { autoPlay } from 'react-swipeable-views-utils';
 import LinearProgress from '@mui/material/LinearProgress';
 import { client, urlFor } from '../lib/client'; // Ensure this path is correct
-
-const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
+import { Carousel } from 'react-responsive-carousel'; // Import Carousel from react-responsive-carousel
+import 'react-responsive-carousel/lib/styles/carousel.min.css'; // Import styles if needed
 
 function SwipeableTextMobileStepper({ initialImages }) {
   const theme = useTheme();
@@ -21,13 +19,14 @@ function SwipeableTextMobileStepper({ initialImages }) {
 
   useEffect(() => {
     if (!initialImages || initialImages.length === 0) {
-      client.fetch(`*[_type == "carousel"]{title, images[]{label, asset}}`)
+      client
+        .fetch(`*[_type == "carousel"]{title, images[]{label, asset}}`)
         .then((data) => {
           console.log('Fetched data:', data);
           if (data && data.length > 0) {
-            const fetchedImages = data[0].images.map(img => ({
+            const fetchedImages = data[0].images.map((img) => ({
               label: img.label,
-              src: urlFor(img.asset).url()
+              src: urlFor(img.asset).url(),
             }));
             setImages(fetchedImages);
             setProgress(new Array(fetchedImages.length).fill(0));
@@ -73,9 +72,11 @@ function SwipeableTextMobileStepper({ initialImages }) {
     setActiveStep((prevActiveStep) => (prevActiveStep - 1 + maxSteps) % maxSteps);
   };
 
-  const handleStepChange = (step) => {
-    setActiveStep(step);
-    setProgress((prevProgress) => prevProgress.map((_, idx) => (idx === step ? 0 : prevProgress[idx])));
+  const handleStepChange = (index) => {
+    setActiveStep(index);
+    setProgress((prevProgress) =>
+      prevProgress.map((_, idx) => (idx === index ? 0 : prevProgress[idx]))
+    );
   };
 
   if (loading) {
@@ -92,12 +93,11 @@ function SwipeableTextMobileStepper({ initialImages }) {
         width: '100vw',
         height: {
           xs: '30vh',
-           sm:'40vh',// height for mobile devices
-          md: '100vh',// height for larger devices
-        '@media (min-width: 911px) and (max-width: 1024px)': {
+          sm: '40vh', // height for mobile devices
+          md: '100vh', // height for larger devices
+          '@media (min-width: 911px) and (max-width: 1024px)': {
             height: '43vh', // height for iPad
           },
-      
         },
         display: 'flex',
         flexDirection: 'column',
@@ -108,17 +108,24 @@ function SwipeableTextMobileStepper({ initialImages }) {
         mt: '73px',
       }}
     >
-      <AutoPlaySwipeableViews
-        axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-        index={activeStep}
-        onChangeIndex={handleStepChange}
-        enableMouseEvents
+      <Carousel
+        selectedItem={activeStep}
+        onChange={handleStepChange}
+        showThumbs={false}
+        autoPlay={true}
+        interval={5000} // Adjust interval as needed
+        infiniteLoop={true}
+        stopOnHover={false}
+        swipeable={true}
+        emulateTouch={true}
+        dynamicHeight={true}
+        width='100%'
         style={{ width: '100%', height: '100%' }}
       >
         {images.map((step, index) => (
-          <Box
+          <div
             key={index}
-            sx={{
+            style={{
               width: '100%',
               height: '100%',
               display: 'flex',
@@ -129,11 +136,10 @@ function SwipeableTextMobileStepper({ initialImages }) {
             }}
           >
             {Math.abs(activeStep - index) <= 2 && (
-              <Box
-                component="img"
+              <img
                 src={step.src}
                 alt={step.label}
-                sx={{
+                style={{
                   width: '100%',
                   height: '100%',
                   objectFit: 'cover', // Maintain aspect ratio
@@ -144,9 +150,9 @@ function SwipeableTextMobileStepper({ initialImages }) {
                 }}
               />
             )}
-          </Box>
+          </div>
         ))}
-      </AutoPlaySwipeableViews>
+      </Carousel>
       <Box
         sx={{
           position: 'absolute',
@@ -200,9 +206,9 @@ function SwipeableTextMobileStepper({ initialImages }) {
 export async function getServerSideProps() {
   try {
     const data = await client.fetch(`*[_type == "carousel"]{title, images[]{label, asset}}`);
-    const images = (data && data.length > 0) ? data[0].images.map(img => ({
+    const images = data && data.length > 0 ? data[0].images.map((img) => ({
       label: img.label,
-      src: urlFor(img.asset).url()
+      src: urlFor(img.asset).url(),
     })) : [];
 
     return {

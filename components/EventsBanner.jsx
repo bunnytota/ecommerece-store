@@ -1,8 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
-import event1 from '../src/assets/event1.png' 
-import event2 from '../src/assets/event2.png' 
-import event3 from '../src/assets/event3.png' 
+ 
 import Link from 'next/link'
 import { urlFor } from '../lib/client'
 

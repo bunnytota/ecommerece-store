@@ -1,6 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
-import logo from '../src/assets/Logo.png'
+
 import { BsTwitter, BsInstagram ,BsWhatsapp } from 'react-icons/bs';
 import {GrFacebookOption, GrTwitter, GrLinkedinOption, GrInstagram} from 'react-icons/gr'
 

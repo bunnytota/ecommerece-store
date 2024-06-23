@@ -3,7 +3,7 @@ import Image from 'next/image'
 import {CiSearch} from 'react-icons/ci'
 import {CgShoppingCart} from 'react-icons/cg'
 import clothlogo from '../src/assets/clothlogo.png'
-import mylogo2 from '../src/assets/mylogo2.png'
+
 import Link from 'next/link'
 import {RiMenu3Line,RiArrowLeftLine, RiCloseLine } from 'react-icons/ri';
 import { FiMenu } from "react-icons/fi";
