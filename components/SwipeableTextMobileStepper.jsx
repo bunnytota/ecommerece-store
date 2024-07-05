@@ -121,6 +121,7 @@ function SwipeableTextMobileStepper({ initialImages }) {
         dynamicHeight={true}
         width='100%'
         style={{ width: '100%', height: '100%' }}
+      showIndicators={false}
       >
         {images.map((step, index) => (
           <div
@@ -192,12 +193,8 @@ function SwipeableTextMobileStepper({ initialImages }) {
           px: 2,
         }}
       >
-        <Button size="small" onClick={handleBack} sx={{ color: 'white' }}>
-          <KeyboardArrowLeft />
-        </Button>
-        <Button size="small" onClick={handleNext} sx={{ color: 'white' }}>
-          <KeyboardArrowRight />
-        </Button>
+        
+        
       </Box>
     </Box>
   );
