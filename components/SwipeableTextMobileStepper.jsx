@@ -1,13 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
-import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LinearProgress from '@mui/material/LinearProgress';
-import { client, urlFor } from '../lib/client'; // Ensure this path is correct
-import { Carousel } from 'react-responsive-carousel'; // Import Carousel from react-responsive-carousel
-import 'react-responsive-carousel/lib/styles/carousel.min.css'; // Import styles if needed
+import { client, urlFor } from '../lib/client';
+import { Carousel } from 'react-responsive-carousel';
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
 function SwipeableTextMobileStepper({ initialImages }) {
   const theme = useTheme();
@@ -22,7 +19,6 @@ function SwipeableTextMobileStepper({ initialImages }) {
       client
         .fetch(`*[_type == "carousel"]{title, images[]{label, asset}}`)
         .then((data) => {
-          console.log('Fetched data:', data);
           if (data && data.length > 0) {
             const fetchedImages = data[0].images.map((img) => ({
               label: img.label,
@@ -68,10 +64,6 @@ function SwipeableTextMobileStepper({ initialImages }) {
     setActiveStep((prevActiveStep) => (prevActiveStep + 1) % maxSteps);
   };
 
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => (prevActiveStep - 1 + maxSteps) % maxSteps);
-  };
-
   const handleStepChange = (index) => {
     setActiveStep(index);
     setProgress((prevProgress) =>
@@ -92,11 +84,11 @@ function SwipeableTextMobileStepper({ initialImages }) {
       sx={{
         width: '100vw',
         height: {
-          xs: '30vh',
-          sm: '40vh', // height for mobile devices
-          md: '100vh', // height for larger devices
+          xs: '20vh',
+          sm: '30vh',
+          md: '50vh',
           '@media (min-width: 911px) and (max-width: 1024px)': {
-            height: '43vh', // height for iPad
+            height: '35vh',
           },
         },
         display: 'flex',
@@ -113,15 +105,14 @@ function SwipeableTextMobileStepper({ initialImages }) {
         onChange={handleStepChange}
         showThumbs={false}
         autoPlay={true}
-        interval={5000} // Adjust interval as needed
+        interval={5000}
         infiniteLoop={true}
         stopOnHover={false}
         swipeable={true}
         emulateTouch={true}
         dynamicHeight={true}
         width='100%'
-        style={{ width: '100%', height: '100%' }}
-      showIndicators={false}
+        showIndicators={false}
       >
         {images.map((step, index) => (
           <div
@@ -132,7 +123,7 @@ function SwipeableTextMobileStepper({ initialImages }) {
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
-              aspectRatio: '16/10', // Maintain aspect ratio
+              aspectRatio: '16/9',
               overflow: 'hidden',
             }}
           >
@@ -140,10 +131,11 @@ function SwipeableTextMobileStepper({ initialImages }) {
               <img
                 src={step.src}
                 alt={step.label}
+                loading="lazy"
                 style={{
                   width: '100%',
                   height: '100%',
-                  objectFit: 'cover', // Maintain aspect ratio
+                  objectFit: 'contain', // Changed from 'cover' to 'contain'
                 }}
                 onError={(e) => {
                   e.target.onerror = null;
@@ -181,20 +173,6 @@ function SwipeableTextMobileStepper({ initialImages }) {
             }}
           />
         ))}
-      </Box>
-      <Box
-        sx={{
-          position: 'absolute',
-          bottom: 20,
-          width: '100%',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          px: 2,
-        }}
-      >
-        
-        
       </Box>
     </Box>
   );
