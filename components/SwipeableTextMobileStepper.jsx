@@ -19,11 +19,15 @@ function SwipeableTextMobileStepper({ initialImages }) {
       client
         .fetch(`*[_type == "carousel"]{title, images[]{label, asset}}`)
         .then((data) => {
+          console.log('Fetched data:', data); // Add this line
           if (data && data.length > 0) {
-            const fetchedImages = data[0].images.map((img) => ({
-              label: img.label,
-              src: urlFor(img.asset).url(),
-            }));
+            const fetchedImages = data.flatMap(item => 
+              item.images.map((img) => ({
+                label: img.label,
+                src: urlFor(img.asset).url(),
+              }))
+            );
+            console.log('Fetched images:', fetchedImages); // Add this line
             setImages(fetchedImages);
             setProgress(new Array(fetchedImages.length).fill(0));
           }
@@ -123,7 +127,7 @@ function SwipeableTextMobileStepper({ initialImages }) {
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
-              aspectRatio: '16/9',
+              aspectRatio: '16/7',
               overflow: 'hidden',
             }}
           >
@@ -135,7 +139,7 @@ function SwipeableTextMobileStepper({ initialImages }) {
                 style={{
                   width: '100%',
                   height: '100%',
-                  objectFit: 'contain', // Changed from 'cover' to 'contain'
+                  objectFit: 'contain', // Ensure the full image is visible
                 }}
                 onError={(e) => {
                   e.target.onerror = null;
